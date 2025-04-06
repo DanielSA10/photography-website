@@ -1,103 +1,193 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
 import Image from "next/image";
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+// Liste over billederne
+const images = [
+  { src: "/images/21.webp" },
+  { src: "/images/22.webp" },
+  { src: "/images/3.webp" },
+  { src: "/images/4.webp" },
+  { src: "/images/5.webp" },
+  { src: "/images/6.webp" },
+  { src: "/images/7.webp" },
+  { src: "/images/8.webp" },
+  { src: "/images/9.webp" },
+  { src: "/images/10.webp" },
+  { src: "/images/11.webp" },
+  { src: "/images/12.webp" },
+  { src: "/images/13.webp" },
+  { src: "/images/14.webp" },
+  { src: "/images/15.webp" },
+  { src: "/images/16.webp" },
+  { src: "/images/18.webp" },
+  { src: "/images/19.webp" },
+  { src: "/images/20.webp" },
+  { src: "/images/1.webp" },
+  { src: "/images/2.webp" },
+  { src: "/images/23.webp" },
+  { src: "/images/24.webp" },
+  { src: "/images/25.webp" },
+  { src: "/images/26.webp" },
+  { src: "/images/27.webp" },
+  { src: "/images/28.webp" },
+  { src: "/images/29.webp" },
+  { src: "/images/30.webp" },
+  { src: "/images/31.webp" },
+  { src: "/images/32.webp" },
+];
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+export default function RecentWork() {
+  const logoRef = useRef<HTMLDivElement>(null);
+  const imagesContainerRef = useRef<HTMLDivElement>(null);
+  const [imagesVisible, setImagesVisible] = useState(false);
+  
+  useEffect(() => {
+    // Ensure images are initially hidden
+    setImagesVisible(false);
+    
+    const setupAnimation = () => {
+      const logoElement = logoRef.current;
+      if (!logoElement) return;
+      
+      // Find logo container
+      const logoContainer = document.querySelector('.logo-container');
+      if (!logoContainer) return;
+      
+      // Store the original position and dimensions
+      const logoContainerRect = logoContainer.getBoundingClientRect();
+      const logoRect = logoElement.getBoundingClientRect();
+      
+      // Calculate center position
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+      const centerX = viewportWidth / 2 - logoRect.width / 2;
+      const centerY = viewportHeight / 2 - logoRect.height / 2;
+      
+      // Clone the logo element for the animation
+      const logoClone = logoElement.cloneNode(true) as HTMLElement;
+      logoClone.style.position = "fixed";
+      logoClone.style.zIndex = "100";
+      logoClone.style.pointerEvents = "none"; // Prevent interactions with the clone
+      
+      // Set initial position to center of viewport
+      logoClone.style.top = `${centerY}px`;
+      logoClone.style.left = `${centerX}px`;
+      logoClone.style.opacity = "0"; // Start invisible for fade-in
+      
+      document.body.appendChild(logoClone);
+      
+      // Setup animation timeline
+      const tl = gsap.timeline({
+        onComplete: () => {
+          // Show the original logo and remove clone when animation completes
+          logoElement.style.opacity = "1";
+          document.body.removeChild(logoClone);
+          
+          // Now show the images with animation
+          setImagesVisible(true);
+        }
+      });
+      
+  // Animate the cloned logo with fade-in
+  tl.fromTo(logoClone, 
+    { opacity: 0,
+      y: -40
+     }, 
+    {
+      opacity: 1,
+      y: 0,
+      duration: .9,
+      ease: "power2.inOut"
+    })
+      .to(logoClone, {
+        duration: 0.3 // Pause in the center
+      })
+      .to(logoClone, {
+        top: `${logoContainerRect.top}px`,
+        left: `${logoContainerRect.left + (logoContainerRect.width/2) - (logoRect.width/2)}px`,
+        duration: .8,
+        ease: "power3.inOut"
+      });
+    };
+    
+    // Wait a brief moment to ensure everything is rendered
+    const timer = setTimeout(() => {
+      setupAnimation();
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Image animation after logo animation completes
+  useEffect(() => {
+    if (!imagesVisible || !imagesContainerRef.current) return;
+    
+    const imagesTl = gsap.timeline();
+    
+    imagesTl.from(".image-item", {
+      opacity: 0,
+      y: 50,
+      stagger: 0.1,
+      duration: 0.8,
+      ease: "power3.out"
+    });
+    
+    // Debugging - log antal elementer
+    console.log("Antal billeder i gallery:", document.querySelectorAll(".image-item").length);
+    
+  }, [imagesVisible]);
+
+  return (
+    <section className="px-6 py-12">
+      {/* Logo med ref til animation */}
+      <div className="text-center mb-12 logo-container">
+        <div 
+          ref={logoRef} 
+          className="inline-block"
+          style={{ opacity: 0 }} // Start med opacity 0
+        >
+          <Image
+            src="/dsa-logo.png"
+            alt="DSA Logo"
+            width={200}
+            height={50}
+            className="mx-auto"
+            priority 
+          />
+        </div>
+      </div>
+
+      {/* Galleri container - beholder original kolonnestruktur */}
+      <div 
+        ref={imagesContainerRef}
+        className="mx-auto max-w-[1400px] columns-1 sm:columns-2 md:columns-3 gap-3 space-y-4"
+        style={{ 
+          display: imagesVisible ? 'block' : 'none'
+        }}
+      >
+        {images.map((img, idx) => (
+          <div
+            key={idx}
+            className="image-item break-inside-avoid overflow-hidden rounded-sm shadow-md mb-4 cursor-zoom-in"
+            style={{ height: '100%' }} // Fast højde for alle billeder
           >
             <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+              src={img.src}
+              alt={`Work ${idx + 1}`}
+              width={800}
+              height={600}
+              className="w-full h-full object-cover transition-transform duration-300 hover:scale-103"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              loading={idx < 6 ? "eager" : "lazy"}
+              placeholder="blur"
+              blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'%3E%3Crect width='800' height='600' fill='%23f3f4f6'/%3E%3C/svg%3E"
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }
