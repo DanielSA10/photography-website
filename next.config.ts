@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  devIndicators: false,
+  // andre konfigurationsindstillinger du måtte have
 };
 
 export default nextConfig;

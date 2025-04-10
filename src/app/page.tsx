@@ -6,13 +6,13 @@ import Image from "next/image";
 
 // Liste over billederne
 const images = [
-  { src: "/images/21.webp" },
-  { src: "/images/22.webp" },
-  { src: "/images/3.webp" },
+  { src: "/images/26.webp" },
+  { src: "/images/2.webp" },
+  { src: "/images/28.webp" },
   { src: "/images/4.webp" },
   { src: "/images/5.webp" },
   { src: "/images/6.webp" },
-  { src: "/images/7.webp" },
+  { src: "/images/30.webp" },
   { src: "/images/8.webp" },
   { src: "/images/9.webp" },
   { src: "/images/10.webp" },
@@ -25,18 +25,30 @@ const images = [
   { src: "/images/18.webp" },
   { src: "/images/19.webp" },
   { src: "/images/20.webp" },
-  { src: "/images/1.webp" },
-  { src: "/images/2.webp" },
+  { src: "/images/21.webp" },
+  { src: "/images/22.webp" },
   { src: "/images/23.webp" },
   { src: "/images/24.webp" },
   { src: "/images/25.webp" },
-  { src: "/images/26.webp" },
+  { src: "/images/1.webp" },
   { src: "/images/27.webp" },
-  { src: "/images/28.webp" },
-  { src: "/images/29.webp" },
-  { src: "/images/30.webp" },
+  { src: "/images/3.webp" },
+  { src: "/images/39.webp" },
+  { src: "/images/7.webp" },
   { src: "/images/31.webp" },
   { src: "/images/32.webp" },
+  { src: "/images/33.webp" },
+  { src: "/images/34.webp" },
+  { src: "/images/35.webp" },
+  { src: "/images/36.webp" },
+  { src: "/images/37.webp" },
+  { src: "/images/38.webp" },
+  { src: "/images/29.webp" },
+  { src: "/images/40.webp" },
+  { src: "/images/41.webp" },
+  { src: "/images/42.webp" },
+  { src: "/images/43.webp" },
+  
 ];
 
 export default function RecentWork() {
@@ -130,7 +142,6 @@ export default function RecentWork() {
     imagesTl.from(".image-item", {
       opacity: 0,
       y: 50,
-      stagger: 0.1,
       duration: 0.8,
       ease: "power3.out"
     });
@@ -171,7 +182,7 @@ export default function RecentWork() {
         {images.map((img, idx) => (
           <div
             key={idx}
-            className="image-item break-inside-avoid overflow-hidden rounded-sm shadow-md mb-4 cursor-zoom-in"
+            className="image-item break-inside-avoid overflow-hidden rounded-sm shadow-md mb-4 cursor-default"
             style={{ height: '100%' }} // Fast højde for alle billeder
           >
             <Image
@@ -181,7 +192,7 @@ export default function RecentWork() {
               height={600}
               className="w-full h-full object-cover transition-transform duration-300 hover:scale-103"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              loading={idx < 6 ? "eager" : "lazy"}
+              loading="eager"
               placeholder="blur"
               blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'%3E%3Crect width='800' height='600' fill='%23f3f4f6'/%3E%3C/svg%3E"
             />
