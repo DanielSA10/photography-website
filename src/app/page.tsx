@@ -7,7 +7,7 @@ import Image from "next/image";
 // Liste over billederne
 const images = [
   { src: "/images/26.webp" },
-  { src: "/images/2.webp" },
+  { src: "/images/27.webp" },
   { src: "/images/28.webp" },
   { src: "/images/4.webp" },
   { src: "/images/5.webp" },
@@ -31,7 +31,7 @@ const images = [
   { src: "/images/24.webp" },
   { src: "/images/25.webp" },
   { src: "/images/1.webp" },
-  { src: "/images/27.webp" },
+  { src: "/images/2.webp" },
   { src: "/images/3.webp" },
   { src: "/images/39.webp" },
   { src: "/images/7.webp" },
